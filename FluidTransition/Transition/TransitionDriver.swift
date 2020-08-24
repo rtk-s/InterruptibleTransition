@@ -56,7 +56,11 @@ extension TransitionDriver {
     private func handlePresentation(recognizer r: UIPanGestureRecognizer) {
         switch r.state {
         case .began:
-            pause()
+            if #available(iOS 10.0, *) {
+                pause()
+            } else {
+                // Fallback on earlier versions
+            }
         case .changed:
             let increment = -r.incrementToBottom(maxTranslation: maxTranslation)
             update(percentComplete + increment)
@@ -79,7 +83,11 @@ extension TransitionDriver {
     private func handleDismiss(recognizer r: UIPanGestureRecognizer) {
         switch r.state {
         case .began:
-            pause() // Pause allows to detect isRunning
+            if #available(iOS 10.0, *) {
+                pause()
+            } else {
+                // Fallback on earlier versions
+            } // Pause allows to detect isRunning
             
             if !isRunning {
                 presentedController?.dismiss(animated: true) // Start the new one
